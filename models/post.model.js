@@ -6,7 +6,7 @@ const postSchema = new mongoose.Schema({
   userId: String,
   author: String, 
   imageUrl: String,
-  comment: [{name: String, content: String}],
+  comments: [{userId: String, content: String}],
   like: {type: Object, default: {}}
 });
 
