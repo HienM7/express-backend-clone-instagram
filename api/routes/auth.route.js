@@ -4,7 +4,7 @@ const router = express.Router();
 const authController = require('../controllers/auth.controller'); 
 
 
-router.post('/login', authController.postLogin);
+router.post('/login', authController.login);
 router.post('/isLoggedIn', authController.isLoggedIn);
 router.post('/register', authController.register);
 

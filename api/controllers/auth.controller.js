@@ -4,7 +4,7 @@ const shortId = require('shortid');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-module.exports.postLogin = async (req, res) => {
+module.exports.login = async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const user = await User.findOne({email: email});
