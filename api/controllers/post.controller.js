@@ -31,3 +31,33 @@ module.exports.getPost = async (req, res) => {
     res.json({success: false});
   }
 }
+
+module.exports.like = async (req, res) => {
+  const token = req.body.token;
+  const postId = req.body.postId;
+  const like = req.body.like;
+  try {
+    const tokenVerify = jwt.verify(token, 'secretkey')
+    const {userId} = tokenVerify;
+    let user = await User.findOne({id: userId});
+
+    if (!user) {
+      res.json({success: false, message: "wrong username"})
+      return;
+    }
+    
+    let post = await Post.findOne({id: postId});
+    if (!post) {
+    res.json({success: false, message: "wrong post"})
+    return;
+    }
+    await Post.updateOne(
+      {id: postId},
+      {["like." + userId]: like}
+    );
+    res.json({success: true})
+  } catch (e) {
+    console.log(e);  
+    res.json({success: false})
+  }
+}
