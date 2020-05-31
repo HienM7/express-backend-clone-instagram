@@ -61,3 +61,34 @@ module.exports.like = async (req, res) => {
     res.json({success: false})
   }
 }
+
+
+module.exports.comment = async (req, res) => {
+  const token = req.body.token;
+  let content = req.body.content;
+  let postId = req.body.postId;
+  
+  try {
+    const tokenVerify = jwt.verify(token, 'secretkey');
+    const { userId } = tokenVerify;
+    let user = await User.findOne({id: userId});
+    if (!user) {
+      res.json({success: false, message: "wrong username"})
+      return;
+    }
+    let post = await Post.findOne({id: postId});
+    if (!post) {
+      res.json({success: false, message: "wrong post"})
+      return;
+    }
+    await Post.updateOne(
+      {id: postId},
+      {"$push": { "comments": {content: content, userId: userId}}
+    });
+    res.json({success: true})
+  } catch (e) {
+    console.log(e);
+    res.json({success: false});
+  }
+  
+}
